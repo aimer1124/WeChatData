@@ -4,9 +4,48 @@ Use Python to deal Weixin Data
 - Python: `3.6.1`
 - Module
 
-  | Name   |      Summary      |  Github |
-  |----------|:-------------:|------:|
+  | Name   |      Summary      |  WebSite |
+  |----------|:-------------|:------|
   |itchat| 微信个人号接口、微信机器人及命令行微信|[https://github.com/littlecodersh/ItChat](https://github.com/littlecodersh/ItChat)|
+  |jieba| 中文分词|[https://github.com/fxsjy/jieba](https://github.com/fxsjy/jieba)|
+  |wordcloud| Python 的词云生成工具|[https://github.com/amueller/word_cloud](https://github.com/amueller/word_cloud)|
+  |os| 获取操作系统的权限|[https://docs.python.org/3.6/library/os.html](https://docs.python.org/3.6/library/os.html)|
+
+
+
+## 第三步，获取微信中所有好友的`签名`，将`签名`的内容进行词云分析
+
+- 获取好友中的`签名`信息
+
+```
+signature = i["Signature"].replace(" ", "").replace("span", "").replace("class", "").replace("emoji", "")
+```
+
+- 使用`jieba`分词
+
+```
+wordlist_jieba = jieba.cut(text, cut_all=True)
+wl_space_split = " ".join(wordlist_jieba)
+```
+
+- 使用`wordcloud`词云进行词云处理
+
+```
+my_wordcloud = WordCloud(font_path='/Users/yjshi/Library/Fonts/arialuni.ttf').generate(wl_space_split)
+plt.imshow(my_wordcloud, interpolation='bilinear')
+plt.axis("off")
+plt.show()
+```
+
+如果有中主语言需要使用词云时，需要修改`wordcloud`的默认字体。默认字体是不支持**中文字符**的.
+
+```
+font_path='/Users/yjshi/Library/Fonts/arialuni.ttf'
+```
+
+- 查看生成的词云图
+
+![词云图](./img/SignatureWordCloud1.png)
 
 
 ## 第二步，获取微信好友中，男女比例
