@@ -10,7 +10,9 @@ Use Python to deal Weixin Data
   |jieba| 中文分词|[https://github.com/fxsjy/jieba](https://github.com/fxsjy/jieba)|
   |wordcloud| Python 的词云生成工具|[https://github.com/amueller/word_cloud](https://github.com/amueller/word_cloud)|
   |os| 获取操作系统的权限|[https://docs.python.org/3.6/library/os.html](https://docs.python.org/3.6/library/os.html)|
-
+  |numpy| 图形文件数据处理|[http://www.numpy.org/](http://www.numpy.org/)|
+  |PIL.Image| 图片处理模块|[https://pillow.readthedocs.io/en/3.1.x/reference/Image.html](https://pillow.readthedocs.io/en/3.1.x/reference/Image.html)|
+  |matplotlib.pyplot| 数据处理|[https://matplotlib.org/api/pyplot_api.html](https://matplotlib.org/api/pyplot_api.html)|
 
 
 ## 第三步，获取微信中所有好友的`签名`，将`签名`的内容进行词云分析
@@ -46,6 +48,27 @@ font_path='/Users/yjshi/Library/Fonts/arialuni.ttf'
 - 查看生成的词云图
 
 ![词云图](./img/SignatureWordCloud1.png)
+
+- 使用指定的图片，生成词云图
+
+    - 原图
+
+    ![原图](pic.png)
+
+    - 词云图
+
+    ![词云图](./img/SignatureWordCloud2.png)
+
+```
+d = os.path.dirname(__file__)
+alice_coloring = np.array(Image.open(os.path.join(d, "pic.png")))
+my_wordcloud = WordCloud(background_color="white", max_words=2000, mask=alice_coloring,max_font_size=40, random_state=42,font_path='/Users/yjshi/Library/Fonts/arialuni.ttf').generate(wl_space_split)
+image_colors = ImageColorGenerator(alice_coloring)
+plt.imshow(my_wordcloud.recolor(color_func=image_colors))
+plt.imshow(my_wordcloud)
+plt.axis("off")
+plt.show()
+```
 
 
 ## 第二步，获取微信好友中，男女比例
@@ -105,4 +128,16 @@ itchat.send(u'你好', 'filehelper')
 2. 通过扫描二维码后，手机登录，登录后可使用微信`网页`版本的功能
 
 核心实现代码`itchat/components/login.py`
+
+
+
+---------------
+
+`参考资料`：
+
+- [用Python玩转微信的正确姿势！](https://mp.weixin.qq.com/s?__biz=MzAxMjUyNDQ5OA==&mid=2653553234&idx=1&sn=73045e4a154f3d40a3640184d5c91c1e&chksm=806e2cefb719a5f97c88c97e3b34b2620e29a509e94857858f13db7e2ca2e58d2b7237cca800&mpshare=1&scene=1&srcid=#rd)
+- [https://github.com/littlecodersh/ItChat](https://github.com/littlecodersh/ItChat)
+- [https://github.com/fxsjy/jieba](https://github.com/fxsjy/jieba)
+- [https://github.com/amueller/word_cloud](https://github.com/amueller/word_cloud)
+- [https://docs.python.org/3.6/library/os.html](https://docs.python.org/3.6/library/os.html)
 
